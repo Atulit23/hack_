@@ -78,6 +78,18 @@ app.post('/signup', (req, res) => {
     })
 })
 
+app.put('/signup', (req, res) => {
+    const { email, password, role, firstname, lastname } = req.body
+    Profile.findOne({ email: email }, (err, user) => {
+        // console.log(user)
+        if (user) {
+            res.status(200).send(user)
+        } else {
+            res.status(500).send(err)
+        }
+    })
+})
+
 app.get('/signup', (req, res) => {
     Profile.find((err, data) => {
         if (err) {

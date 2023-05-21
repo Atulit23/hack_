@@ -74,6 +74,8 @@ export default function Signup() {
                 }
                 console.log(res.data.message)
               })
+              localStorage.setItem('loginEmail', email)
+              localStorage.setItem('type', 'login')
           }
             }}>Log in</MDBBtn>
 

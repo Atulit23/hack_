@@ -108,10 +108,10 @@ export default function Signup() {
                   })
               }
               localStorage.setItem('signEmail', email)
+              localStorage.setItem('type', 'signup')
             }}>Sign up</MDBBtn>
 
             <div className="text-center">
-x
               <Link to='/login'><p>Already have an account? Login.</p></Link>
 
               {/* <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
