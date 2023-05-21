@@ -1,0 +1,145 @@
+.background-radial-gradient {
+  background-color: hsl(218, 41%, 15%);
+  background-image: radial-gradient(650px circle at 0% 0%,
+      hsl(218, 41%, 35%) 15%,
+      hsl(218, 41%, 30%) 35%,
+      hsl(218, 41%, 20%) 75%,
+      hsl(218, 41%, 19%) 80%,
+      transparent 100%),
+    radial-gradient(1250px circle at 100% 100%,
+      hsl(218, 41%, 45%) 15%,
+      hsl(218, 41%, 30%) 35%,
+      hsl(218, 41%, 20%) 75%,
+      hsl(218, 41%, 19%) 80%,
+      transparent 100%);
+}
+
+#radius-shape-1 {
+  height: 220px;
+  width: 220px;
+  top: -60px;
+  left: -130px;
+  background: radial-gradient(#44006b, #ad1fff);
+  overflow: hidden;
+}
+
+#radius-shape-2 {
+  border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+  bottom: -60px;
+  right: -110px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(#44006b, #ad1fff);
+  overflow: hidden;
+}
+
+.bg-glass {
+  background-color: hsla(0, 0%, 100%, 0.9) !important;
+  backdrop-filter: saturate(200%) blur(25px);
+}
+
+.hei{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  top: -8vh;
+}
+
+.navbar__main {
+  position: relative;
+  height: 8vh;
+  z-index: 1000000;
+}
+
+.navbar__main > p {
+  color: white;
+}
+
+.c{
+  display: flex;
+  justify-content: center;
+}
+
+.size {
+  width: 50%;
+}
+
+.show {
+  display: flex;
+  left: 7rem;
+  top: 2rem;
+  cursor: pointer;
+}
+
+.hide{
+  display: none;
+}
+
+
+.misc {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.message__main {
+  display: flex;
+  width: 14.5rem;
+  height: 3rem;
+  background-color: #f8d7da;
+  border: 1px solid #f5c2c7;
+  position: fixed;
+  left: 100%;
+  top: 5%;
+  animation: anim 0.5s forwards;
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+.message__main__secondary {
+  display: flex;
+  z-index: 1000;
+  width: 14.5rem;
+  height: 3rem;
+  background-color: #f8d7da;
+  border: 1px solid #f5c2c7;
+  position: fixed;
+  left: 100%;
+  top: 5%;
+  animation: anim1 0.5s forwards;
+  border-radius: 4px;
+}
+
+.login__message {
+  color: #842029;
+  margin: 0;
+}
+
+.cross {
+  cursor: pointer;
+}
+
+@keyframes anim {
+  0% {
+    left: 100%;
+    display: flex;
+  }
+
+  100% {
+    left: 83%;
+  }
+}
+
+@keyframes anim1 {
+  0% {
+    left: 83%;
+  }
+
+  100% {
+    left: 100%;
+    display: none;
+  }
+}
