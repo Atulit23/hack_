@@ -2,26 +2,15 @@ import axios from 'axios'
 import React, {useState, useEffect} from 'react'
 import Admin from './Admin'
 import Employee from './Employee'
+import Chatbot from './Chatbot'
+import { store } from './redux/store';
 
-export default function Home() {
-    const [data, setData] = useState([])
-    if(localStorage.getItem('type') == 'signup'){
-          useEffect(() => {
-            axios.put('http://localhost:8001/signup', {email: localStorage.getItem('signEmail')}).then((res) => {
-                setData(res.data)
-            })
-        }, [])
-    } else if(localStorage.getItem('type') == 'login') {
-        useEffect(() => {
-            axios.put('http://localhost:8001/signup', {email: localStorage.getItem('loginEmail')}).then((res) => {
-                setData(res.data)
-            })
-        }, [])
-    }
+export default function Home({userData}) {
+    console.log(userData)
   return (
     <>
         {
-            data.role == 'Admin' ? <Admin /> : <Employee />
+            store.getState().msgs[0].role == 'admin' ? <Admin /> : <Employee />
         }
     </>
   )

@@ -13,26 +13,30 @@ import {
   from 'mdb-react-ui-kit';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
+import Home from './Home';
+import { store } from './redux/store';
 
 export default function Signup() {
-  const [show, setShow] = useState(false)
-  const [firstname, setFisrtName] = useState('')
-  const [secondname, setSecondName] = useState('')
+  const [organization, setOrganization] = useState('')
   const [email, setEmail] = useState('')
-  const [role, setRole] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
+  const [userData, setUserData] = useState([])
+  const [loggedIn, setLoggedIn] = useState(false)
+  // localStorage.setItem('loggedIn', 'false')
+  // localStorage.clear()
+
 
   return (
-    <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden hei'>
+    store.getState().msgs[0].loggedIn == false ? <MDBContainer fluid className='p-4 background-radial-gradient overflow-hidden hei'>
 
-    <MDBRow>
+    <MDBRow style={{width: '80%'}}>
 
       <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
 
         <h1 className="my-5 display-3 fw-bold ls-tight px-3" style={{color: 'hsl(218, 81%, 95%)'}}>
-          The best offer <br />
-          <span style={{color: 'hsl(218, 81%, 75%)'}}>for your business</span>
+          MetaMeet<br />
+          <span style={{color: 'hsl(218, 81%, 75%)'}}>MetaMeet</span>
         </h1>
 
         <p className='px-3' style={{color: 'hsl(218, 81%, 85%)'}}>
@@ -46,33 +50,21 @@ export default function Signup() {
 
       <MDBCol md='6' className='position-relative c'>
 
-        <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
-        <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
 
         <MDBCard className='my-5 bg-glass size'>
           <MDBCardBody className='p-5'>
+          <p className='login__header'>Login</p>
 
-            <MDBRow>
-              <MDBCol col='6'>
-                <MDBInput wrapperClass='mb-4' label='First name' id='form1' type='text' onChange={(e) => {
-                  setFisrtName(e.target.value)
-                }}/>
-              </MDBCol>
-
-              <MDBCol col='6'>
-                <MDBInput wrapperClass='mb-4' label='Last name' id='form2' type='text' onChange={(e) => {
-                  setSecondName(e.target.value)
-                }}/>
-              </MDBCol>
-            </MDBRow>
-
-            <MDBInput wrapperClass='mb-4' label='Email' id='form3' type='email' onChange={(e) => {
+            <MDBInput wrapperClass='mb-4' label='Your Organization' id='form3' type='text' onChange={(e) => {
+                setOrganization(e.target.value)
+              }}/>
+            <MDBInput wrapperClass='mb-4' label='User ID' id='form3' type='text' onChange={(e) => {
               setEmail(e.target.value)
             }}/>
             <MDBInput wrapperClass='mb-4' label='Password' id='form4' type='password' onChange={(e) => {
               setPassword(e.target.value)
             }}/>
-            <div className="btn-group" style={{marginBottom: '1.4rem'}}>
+            {/* <div className="btn-group" style={{marginBottom: '1.4rem'}}>
               <button type="button" className="btn btn-primary">You are</button>
               <button
                 type="button"
@@ -93,26 +85,32 @@ export default function Signup() {
                   setShow(!show)
                   }}>Employee</li>
               </ul>
-            </div>
+            </div> */}
 
             <MDBBtn className='w-100 mb-4' size='md' onClick={async () => {
               if (email != '' && password != '') {
-                axios.post('http://localhost:8001/signup', { email: email, password: password, firstname: firstname, lastname: secondname, role: role })
-                axios.post('http://localhost:8001/login', { email: email, password: password})
+                axios.put('http://localhost:8001/signup', { email: email, password: password, organization: organization })
                   .then(res => {
                     setMessage(res.data.message)
-    
-                    if (res.data.message == 'successful') {
-                      window.location.href = '/home'
+                    console.log(res.data.message)
+                    if (res.data.message == 'login success') {
+                      store.dispatch({
+                        type: 'ADD_MSG',
+                        text: {loggedIn: true, email: res.data.user.email, role: res.data.user.role, organization: res.data.user.organization, team: res.data.user.Team, name: res.data.user.name}
+                      })
+                      console.log(store.getState().msgs[0])
+                      axios.post('http://localhost:8001/tasks', {email: store.getState().msgs[0].email, role: store.getState().msgs[0].role, organization: store.getState().msgs[0].organization, team:store.getState().msgs[0].team, tasks: [], name:  store.getState().msgs[0].name})
+
+                      axios.post('http://localhost:8001/submit', {email: store.getState().msgs[0].email, files: '', message: '', task: ''})
+                      window.location.reload()
                     }
+                    console.log(res.data.message)
                   })
+                  localStorage.setItem('type', 'login')
               }
-              localStorage.setItem('signEmail', email)
-              localStorage.setItem('type', 'signup')
-            }}>Sign up</MDBBtn>
+            }}>Login</MDBBtn>
 
             <div className="text-center">
-              <Link to='/login'><p>Already have an account? Login.</p></Link>
 
               {/* <MDBBtn tag='a' color='none' className='mx-3' style={{ color: '#1266f1' }}>
                 <MDBIcon fab icon='facebook-f' size="sm"/>
@@ -139,11 +137,11 @@ export default function Signup() {
 
     </MDBRow>
 
-    {message == 'User already exist' &&
+    {message == 'wrong credentials' &&
         <div className="message__main">
           <div className="misc">
-            <p className="login__message">User already exists</p>
-            <svg aria-label="Close" color="black" fill="black" height="18" role="img" viewBox="0 0 48 48" width="18" className='cross' onClick={() => {
+            <p className="login__message">Invalid Credentials</p>
+            <svg aria-label="Close" color="black" fill="blzack" height="18" role="img" viewBox="0 0 48 48" width="18" className='cross' onClick={() => {
               document.querySelector('.message__main').setAttribute('class', 'message__main__secondary')
               setTimeout(function () {
                 setMessage('')
@@ -154,6 +152,6 @@ export default function Signup() {
         </div>
       }
 
-  </MDBContainer>
+  </MDBContainer> : <Home userData={userData}/>
   )
 }
